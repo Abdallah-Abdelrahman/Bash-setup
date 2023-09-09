@@ -6,10 +6,6 @@ alias html="here_script | cut -f2"
 alias vimx="createx_bash"
 
 ## Shell Functions
-#print the date in certain format
-today(){
-	echo "Today's date is: "$(date +"%A, %B %-d, %Y")  
-}
 
 # create executable file, and open it with vim
 # the first argument is the name of the file
@@ -20,7 +16,8 @@ createx_bash()
 }
 
 # Git: Queue a change, make a snapshot, and push your changes in one fell swoop
-bussyGit() {
+bussyGit()
+{
 	# commit_msg="COMMIT MESSAGE"
 	read -p "Enter commit message (imperative) please -->  " commit_msg
 	git add .
@@ -52,26 +49,48 @@ alx()
 		cd $(echo "$ALX_PATH/$PROJECT")
 	else
 		echo "$PROJECT is not exist!" | tr -d '*' >&2
-		#exit 1
+	fi
+}
+
+# Remove empty lines
+# `read` reads a line from the stdi and split it into fields
+rm_emptylines()
+{
+	# `-z` for zero-length strings
+	while read l; do
+		[[ -z $l ]] && tr -d '\n'
+	done < $1
+}
+
+# Default to main prototype
+default()
+{
+	# use of `[[` here to eliminate the error binary expected,
+	# So basically, the double brakets is much safer
+	if [[ ! $(tail -n +1 main.h | grep "$1") ]]; then
+		echo "int main(int ac, char **av)"
 	fi
 }
 
 # C file: Create c file with, main function docs
 vimc()
 {
+	# The use of `sed -i` to change file in place (mutation)
 	FUNC_NAME="`echo "$1" | cut -d- -f2`"
 
-	echo -e "#include \"main.h\"
+	echo "#include \"main.h\"
+
 /**
  * "$FUNC_NAME" - write your short description
  * Description: Long desc
  *
  * Return: 0 as exit status
  */
-$(tail -n +1 main.h | grep $FUNC_NAME | tr -d \;) 
+`default "$FUNC_NAME"`
+$(tail -n +1 main.h | grep $FUNC_NAME | tr -d \;)
 {
 	return (0);
-}" > "$1".c && vim "$1".c
+}" > "$1".c && sed -i '/^\s*$/d' "$1".c && vim "$1".c
 }
 
 # here script first try
@@ -90,6 +109,15 @@ _EOF_
 gcf()
 {
 	gcc $FLAGS $@
+}
+
+# Script once I wrote to copy files with certain prototype
+cp_proto()
+{
+	# gre ' ' to execlude emptyline in the end
+	for file in $(tail +4 main.h | grep ' ' | cut -d_ -f2 | cut -d\( -f1); do
+		cp `find ../ -name *$file*.c` . 
+	done
 }
 
 ## enviroment variables
