@@ -67,20 +67,18 @@ alx()
 # `read` reads a line from the stdi and split it into fields
 rm_emptylines()
 {
-	for line in `tail +1 | tr -d ' '`; do
-		echo $line
-	done
-
 	# The while loop combined with `reda` is pretty useful,
-	# but The file need to be,
-	# existed before the expansion.
-	# "$1" is the file
+	# when dealing with single file.
 	# `-z` for zero-length strings
 	# `-r` to ignore escaping
-#	while read -r line; do
-#		[[ -z $line ]] && continue
-#		echo $line
-#	done < "$1"
+	# `IFS=` to remove the default delim for `read`
+	# `-gt 3` here means don't skip empty lines in the 1st 3 lines.
+	count=0
+	while IFS= read -r line; do
+		[[ -z $line && "$count" -gt 3 ]] && continue
+		echo "$line"
+		count=$(("$count" + 1));
+	done
 
 	# or - more elegant, but it has ambigious behavior,
 	# when the line starts with special characters.
@@ -98,13 +96,16 @@ default()
 }
 
 # Boiler-plate for c file based on main.h
+# `<< _EOF_` is called here script or document,
+# useful when formatting large text.
 proto()
 {
 	FUNC_NAME="`echo "$1" | cut -d- -f2`"
-	echo -e "#include \"main.h\"
+	rm_emptylines << _EOF_ 
+#include "main.h"
 
 /**
- * "$FUNC_NAME" - write your short description
+ * $FUNC_NAME - write your short description
  * Description: Long desc
  *
  * Return: 0 as exit status
@@ -113,26 +114,14 @@ proto()
 $(tail -n +1 main.h | grep $FUNC_NAME | tr -d \;)
 {
 	return (0);
-}"
+}
+_EOF_
 }
 
 # Create c file based on the boiler-plate
 vimc()
 {
-	# `-s` sqweeze new lines
-	proto "$1" | tr -s '\n' > "$1".c && vim "$1".c
-}
-
-# here script first try
-here_script()
-{
-	cat << _EOF_
-	<html>
-	        <head>
-                        <title>Here Script</title>
-	        </head>
-	</html>
-_EOF_
+	proto "$1" > "$1".c && vim "$1".c
 }
 
 # Compile c file with flags
@@ -144,9 +133,9 @@ gcf()
 # Script once I wrote to copy files with certain prototype
 cp_proto()
 {
-	# gre ' ' to execlude emptyline in the end
+	# `grep ' '` to execlude emptyline in the end
 	for file in $(tail +4 main.h | grep ' ' | cut -d_ -f2 | cut -d\( -f1); do
-		cp `find ../ -name *$file*.c` . 
+		cp `find ../ -name *$file*.c` .
 	done
 }
 
