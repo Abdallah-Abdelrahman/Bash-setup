@@ -30,7 +30,7 @@ bussyGit()
 commit()
 {
 	read -p "Enter commit message (imperative) please -->  " commit_msg
-	read -p "Continue? (Y/N): " && [[ `"$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss]` ]]
+	read -p "Continue? (Y/N): " && [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]
 	git add .
 	git commit -m"$commit_msg" 
 }
