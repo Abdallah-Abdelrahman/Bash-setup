@@ -20,6 +20,7 @@ bussyGit()
 {
 	# commit_msg="COMMIT MESSAGE"
 	read -p "Enter commit message (imperative) please -->  " commit_msg
+	read -p "Continue? (Y/N): " && [[ `"$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss]` ]]
 	git add .
 	git commit -m"$commit_msg" 
 	git push
@@ -29,6 +30,7 @@ bussyGit()
 commit()
 {
 	read -p "Enter commit message (imperative) please -->  " commit_msg
+	read -p "Continue? (Y/N): " && [[ `"$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss]` ]]
 	git add .
 	git commit -m"$commit_msg" 
 }
@@ -56,10 +58,24 @@ alx()
 # `read` reads a line from the stdi and split it into fields
 rm_emptylines()
 {
+	for line in `tail +1 | tr -d ' '`; do
+		echo $line
+	done
+
+	# The while loop combined with `reda` is pretty useful,
+	# but The file need to be,
+	# existed before the expansion.
+	# "$1" is the file
 	# `-z` for zero-length strings
-	while read l; do
-		[[ -z $l ]] && tr -d '\n'
-	done < $1
+	# `-r` to ignore escaping
+#	while read -r line; do
+#		[[ -z $line ]] && continue
+#		echo $line
+#	done < "$1"
+
+	# or - more elegant, but it has ambigious behavior,
+	# when the line starts with special characters.
+	# cat $1 | grep ' '
 }
 
 # Default to main prototype
@@ -72,13 +88,11 @@ default()
 	fi
 }
 
-# C file: Create c file with, main function docs
-vimc()
+# Boiler-plate for c file based on main.h
+proto()
 {
-	# The use of `sed -i` to change file in place (mutation)
 	FUNC_NAME="`echo "$1" | cut -d- -f2`"
-
-	echo "#include \"main.h\"
+	echo -e "#include \"main.h\"
 
 /**
  * "$FUNC_NAME" - write your short description
@@ -90,7 +104,14 @@ vimc()
 $(tail -n +1 main.h | grep $FUNC_NAME | tr -d \;)
 {
 	return (0);
-}" > "$1".c && sed -i '/^\s*$/d' "$1".c && vim "$1".c
+}"
+}
+
+# Create c file based on the boiler-plate
+vimc()
+{
+	# `-s` sqweeze new lines
+	proto "$1" | tr -s '\n' > "$1".c && vim "$1".c
 }
 
 # here script first try
