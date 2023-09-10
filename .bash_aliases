@@ -21,18 +21,27 @@ bussyGit()
 	# commit_msg="COMMIT MESSAGE"
 	read -p "Enter commit message (imperative) please -->  " commit_msg
 	read -p "Continue? (Y/N): " && [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]
-	git add .
-	git commit -m"$commit_msg" 
-	git push
+	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
+		git add .
+		git commit -m"$commit_msg" 
+		git push
+	else
+		echo cancelled!
+	fi
 }
 
 # Queue up a change, and take a snapshot
 commit()
 {
 	read -p "Enter commit message (imperative) please -->  " commit_msg
-	read -p "Continue? (Y/N): " && [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]] || echo Abort!
-	git add .
-	git commit -m"$commit_msg" 
+	read -p "Continue? (Y/N): "
+	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
+		git add .
+		git commit -m"$commit_msg" 
+	else
+		echo cancelled!
+	fi
+
 }
 
 # Look up ALX project
