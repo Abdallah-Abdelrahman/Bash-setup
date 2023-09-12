@@ -85,12 +85,31 @@ rm_emptylines()
 	# cat $1 | grep ' '
 }
 
+# Generate header file boiler-plate
+header()
+{
+	# `<<-` the hyphen means remove the leading tabs.
+	cat > "$1".h <<- _EOF_
+	#ifndef HEADER
+	#define HEADER
+	/* your protos and preprocessors goes here*/
+	#endif /* HEADER */
+
+_EOF_
+}
+
+# Open header boiler-plate with vim
+vimh()
+{
+	header "$1" && vim "$1".h
+}
+
 # Default to main prototype
 default()
 {
 	# use of `[[` here to eliminate the error binary expected,
 	# So basically, the double brakets is much safer
-	if [[ ! $(tail -n +1 main.h | grep "$1") ]]; then
+	if [[ ! $(tail -n +1 "$2".h | grep "$1") ]]; then
 		echo "int main(int ac, char **av)"
 	fi
 }
@@ -102,7 +121,7 @@ proto()
 {
 	FUNC_NAME="`echo "$1" | cut -d- -f2`"
 	rm_emptylines << _EOF_ 
-#include "main.h"
+#include $2.h
 
 /**
  * $FUNC_NAME - write your short description
@@ -110,8 +129,8 @@ proto()
  *
  * Return: 0 as exit status
  */
-`default "$FUNC_NAME"`
-$(tail -n +1 main.h | grep $FUNC_NAME | tr -d \;)
+`default "$FUNC_NAME" "$2"`
+$(tail -n +1 "$2".h | grep $FUNC_NAME | tr -d \;)
 {
 	return (0);
 }
@@ -121,7 +140,9 @@ _EOF_
 # Create c file based on the boiler-plate
 vimc()
 {
-	proto "$1" > "$1".c && vim "$1".c
+	read -p "file name honey: -> " file
+	read -p "wt's ur header babe: -> " header
+	proto "$file" "$header" > "$file".c && vim "$file".c
 }
 
 # Compile c file with flags
