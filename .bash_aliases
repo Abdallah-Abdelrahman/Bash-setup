@@ -12,7 +12,7 @@ alias vimx="createx_bash"
 createx_bash()
 {
 	file_name="$1"
-	echo -e '#!/bin/bash\n' > $file_name && vim $file_name && chmod u+x $file_name  
+	echo -e '#!/bin/bash\n' > $file_name && vim $file_name && chmod u+x $file_name
 }
 
 # Git: Queue a change, make a snapshot, and push your changes in one fell swoop
@@ -23,7 +23,7 @@ bussyGit()
 	read -p "Continue? (Y/N): " && [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]
 	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
 		git add .
-		git commit -m"$commit_msg" 
+		git commit -m"$commit_msg"
 		git push
 	else
 		echo cancelled!
@@ -37,7 +37,7 @@ commit()
 	read -p "Continue? (Y/N): "
 	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
 		git add .
-		git commit -m"$commit_msg" 
+		git commit -m"$commit_msg"
 	else
 		echo cancelled!
 	fi
@@ -53,11 +53,17 @@ alx()
 
 	ALX_PATH="$HOME/Desktop/ALX-SE"
 	PROJECT="*$repo*/*$project*"
+	last="`echo -n $project | tail -c 1 | tr '[:lower:]' '[:upper:]'`"
+	rest="`echo -n $project | head -c -1`"
+	last_cap="$rest$last"
+	PROJECT_CAPS="*$repo*/*$last_cap*"
 	
-	# test the project exist or not
+	# test the project exist or not, if so change directory
 	# `-n` length of string is non-zero
 	if [ -n "$(find "$ALX_PATH" -wholename "$PROJECT" -type d)" ]; then
 		cd $(echo "$ALX_PATH/$PROJECT")
+	elif [ -n "$(find "$ALX_PATH" -wholename "$PROJECT_CAPS" -type d)" ]; then 
+		cd $(echo "$ALX_PATH/$PROJECT_CAPS")
 	else
 		echo "$PROJECT is not exist!" | tr -d '*' >&2
 	fi
@@ -94,7 +100,6 @@ header()
 	#define HEADER
 	/* your protos and preprocessors goes here*/
 	#endif /* HEADER */
-
 _EOF_
 }
 
@@ -121,7 +126,7 @@ proto()
 {
 	FUNC_NAME="`echo "$1" | cut -d- -f2`"
 	rm_emptylines << _EOF_ 
-#include $2.h
+#include "$2.h"
 
 /**
  * $FUNC_NAME - write your short description
@@ -129,7 +134,7 @@ proto()
  *
  * Return: 0 as exit status
  */
-`default "$FUNC_NAME" "$2"`
+$(default "$FUNC_NAME" "$2")
 $(tail -n +1 "$2".h | grep $FUNC_NAME | tr -d \;)
 {
 	return (0);
@@ -140,12 +145,22 @@ _EOF_
 # Create c file based on the boiler-plate
 vimc()
 {
-	read -p "file name honey: -> " file
-	read -p "wt's ur header babe: -> " header
+	file="$1"
+	header="main"
+
+	if [[ "$#" < 1 ]]; then
+		read -p "wt's ur c file honey? (w/out extension): -> " file
+	fi
+
+	if [[ "$#" == 2 ]]; then
+		header="$2"
+	fi
+	
 	proto "$file" "$header" > "$file".c && vim "$file".c
 }
 
 # Compile c file with flags
+# `$@` expands to varaible of arguments
 gcf()
 {
 	gcc $FLAGS $@
