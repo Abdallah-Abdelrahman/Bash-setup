@@ -6,6 +6,11 @@ alias html="here_script | cut -f2"
 alias vimx="createx_bash"
 
 ## Shell Functions
+# run valgrind with flags
+valgf()
+{
+	valgrind --leak-check=full --show-leak-kinds=all $@
+}
 
 # create executable file, and open it with vim
 # the first argument is the name of the file
@@ -163,7 +168,7 @@ vimc()
 # `$@` expands to varaible of arguments
 gcf()
 {
-	gcc $FLAGS $@
+	gcc $FLAGS -g $@
 }
 
 # Script once I wrote to copy files with certain prototype
