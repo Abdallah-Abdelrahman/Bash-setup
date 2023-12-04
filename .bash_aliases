@@ -4,8 +4,28 @@
 alias vim="nvim"
 alias html="here_script | cut -f2"
 alias vimx="createx_bash"
+alias vimpy="createx_py"
+alias mysetup="vim ~/.bash_aliases"
 
 ## Shell Functions
+
+# navigate to alx repo and optionally create new project's dir
+# and README.md file
+navalx()
+{
+	read -p "Wt't the repo (provide an optional project name)-> " REPO PROJECT
+	ALX_PATH="$HOME/Desktop/ALX-SE"
+	
+	# test the project exist or not, if so change directory
+	# `-n` length of string is non-zero
+	if [ -n "$(find "$ALX_PATH" -wholename "$ALX_PATH/*$REPO*" -type d)" ]; then
+		cd $(echo "$ALX_PATH/*$REPO*")
+	fi
+	if [ -n "$PROJECT" ]; then
+		mkdir "$PROJECT" && vim README.md
+	fi
+}
+
 # run valgrind with flags
 valgf()
 {
@@ -18,6 +38,14 @@ createx_bash()
 {
 	file_name="$1"
 	echo -e '#!/bin/bash\n' > $file_name && vim $file_name && chmod u+x $file_name
+}
+
+# create executable file, and open it with vim
+# the first argument is the name of the file
+createx_py()
+{
+	file_name="$1"
+	echo -e '#!/usr/bin/python3\n' > $file_name && vim $file_name && chmod u+x $file_name
 }
 
 # Git: Queue a change, make a snapshot, and push your changes in one fell swoop
@@ -53,20 +81,22 @@ commit()
 alx()
 {
 	# read the the repo name, and project
-	read -p "Wt't the repo? => " repo
-	read -p "Wt's the project? => " project
+	read -p "Wt't the repo -> " repo
+	read -p "Wt's the project? -> " project
 
 	ALX_PATH="$HOME/Desktop/ALX-SE"
-	PROJECT="*$repo*/*$project*"
+	PROJECT="*$repo*"
+	# This trick capitalizes the last char
 	last="`echo -n $project | tail -c 1 | tr '[:lower:]' '[:upper:]'`"
+	# This trick `echo`s the string, except the last char
 	rest="`echo -n $project | head -c -1`"
 	last_cap="$rest$last"
 	PROJECT_CAPS="*$repo*/*$last_cap*"
-	
+
 	# test the project exist or not, if so change directory
 	# `-n` length of string is non-zero
-	if [ -n "$(find "$ALX_PATH" -wholename "$PROJECT" -type d)" ]; then
-		cd $(echo "$ALX_PATH/$PROJECT")
+	if [ -n "$(find "$ALX_PATH" -wholename "$PROJECT/*$project*" -type d)" ]; then
+		cd $(echo "$ALX_PATH/$PROJECT/*$project*")
 	elif [ -n "$(find "$ALX_PATH" -wholename "$PROJECT_CAPS" -type d)" ]; then 
 		cd $(echo "$ALX_PATH/$PROJECT_CAPS")
 	else
@@ -175,7 +205,7 @@ gcf()
 cp_proto()
 {
 	# `grep ' '` to execlude emptyline in the end
-	for file in $(tail +4 main.h | grep ' ' | cut -d_ -f2 | cut -d\( -f1); do
+	for file in $(tail +3 main.h | grep ' ' | cut -d_ -f2 | cut -d\( -f1); do
 		cp `find ../ -name *$file*.c` .
 	done
 }
