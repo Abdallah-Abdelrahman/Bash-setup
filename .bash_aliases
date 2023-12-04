@@ -13,7 +13,7 @@ alias mysetup="vim ~/.bash_aliases"
 # and README.md file
 navalx()
 {
-	read -p "Wt't the repo (provide an optional project name)-> " REPO PROJECT
+	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
 	ALX_PATH="$HOME/Desktop/ALX-SE"
 	
 	# test the project exist or not, if so change directory
@@ -21,8 +21,9 @@ navalx()
 	if [ -n "$(find "$ALX_PATH" -wholename "$ALX_PATH/*$REPO*" -type d)" ]; then
 		cd $(echo "$ALX_PATH/*$REPO*")
 	fi
+
 	if [ -n "$PROJECT" ]; then
-		mkdir "$PROJECT" && vim README.md
+		mkdir "$PROJECT" && cd "$PROJECT" && vim README.md
 	fi
 }
 
@@ -81,7 +82,7 @@ commit()
 alx()
 {
 	# read the the repo name, and project
-	read -p "Wt't the repo -> " repo
+	read -p "Wt's the repo -> " repo
 	read -p "Wt's the project? -> " project
 
 	ALX_PATH="$HOME/Desktop/ALX-SE"
