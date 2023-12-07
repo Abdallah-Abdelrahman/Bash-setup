@@ -9,13 +9,14 @@ alias mysetup="vim ~/.bash_aliases"
 
 ## Shell Functions
 
-# navigate to alx repo and optionally create new project's dir
-# and README.md file
+# create new alx project initialized w/ readme file
 navalx()
 {
-	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
+#	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
+	REPO="$1"
+	PROJECT="$2"
 	ALX_PATH="$HOME/Desktop/ALX-SE"
-	
+
 	# test the project exist or not, if so change directory
 	# `-n` length of string is non-zero
 	if [ -n "$(find "$ALX_PATH" -wholename "$ALX_PATH/*$REPO*" -type d)" ]; then
@@ -54,7 +55,7 @@ bussyGit()
 {
 	# commit_msg="COMMIT MESSAGE"
 	read -p "Enter commit message (imperative) please -->  " commit_msg
-	read -p "Continue? (Y/N): " && [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]
+	read -p "Continue? (Y/N): "
 	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
 		git add .
 		git commit -m"$commit_msg"
@@ -81,27 +82,41 @@ commit()
 # Look up ALX project
 alx()
 {
-	# read the the repo name, and project
-	read -p "Wt's the repo -> " repo
-	read -p "Wt's the project? -> " project
-
-	ALX_PATH="$HOME/Desktop/ALX-SE"
-	PROJECT="*$repo*"
-	# This trick capitalizes the last char
-	last="`echo -n $project | tail -c 1 | tr '[:lower:]' '[:upper:]'`"
-	# This trick `echo`s the string, except the last char
-	rest="`echo -n $project | head -c -1`"
-	last_cap="$rest$last"
-	PROJECT_CAPS="*$repo*/*$last_cap*"
-
-	# test the project exist or not, if so change directory
-	# `-n` length of string is non-zero
-	if [ -n "$(find "$ALX_PATH" -wholename "$PROJECT/*$project*" -type d)" ]; then
-		cd $(echo "$ALX_PATH/$PROJECT/*$project*")
-	elif [ -n "$(find "$ALX_PATH" -wholename "$PROJECT_CAPS" -type d)" ]; then 
-		cd $(echo "$ALX_PATH/$PROJECT_CAPS")
+	if [[ "$#" > 0 ]]; then
+		# navigate to repo
+		navalx "$1"
 	else
-		echo "$PROJECT is not exist!" | tr -d '*' >&2
+		# read the the repo name, and project
+
+		read -p "Wt's the repo -> " repo NEW_PROJECT
+		if [ -n "$NEW_PROJECT" ]; then
+			# create new project inside a repo
+
+			navalx "$repo" "$NEW_PROJECT"
+		else
+			# navigate to specific project inside a repo
+
+			read -p "Wt's the project? -> " project
+
+			ALX_PATH="$HOME/Desktop/ALX-SE"
+			PROJECT="*$repo*"
+			# This trick capitalizes the last char
+			last="`echo -n $project | tail -c 1 | tr '[:lower:]' '[:upper:]'`"
+			# This trick `echo`s the string, except the last char
+			rest="`echo -n $project | head -c -1`"
+			last_cap="$rest$last"
+			PROJECT_CAPS="*$repo*/*$last_cap*"
+
+			# test the project exist or not, if so change directory
+			# `-n` length of string is non-zero
+			if [ -n "$(find "$ALX_PATH" -wholename "$PROJECT/*$project*" -type d)" ]; then
+				cd $(echo "$ALX_PATH/$PROJECT/*$project*")
+			elif [ -n "$(find "$ALX_PATH" -wholename "$PROJECT_CAPS" -type d)" ]; then 
+				cd $(echo "$ALX_PATH/$PROJECT_CAPS")
+			else
+				echo "$PROJECT is not exist!" | tr -d '*' >&2
+			fi
+		fi
 	fi
 }
 
@@ -109,7 +124,7 @@ alx()
 # `read` reads a line from the stdi and split it into fields
 rm_emptylines()
 {
-	# The while loop combined with `reda` is pretty useful,
+	# The while loop combined with `read` is pretty useful,
 	# when dealing with single file.
 	# `-z` for zero-length strings
 	# `-r` to ignore escaping
@@ -199,7 +214,7 @@ vimc()
 # `$@` expands to varaible of arguments
 gcf()
 {
-	gcc $FLAGS -g $@
+	gcc -g "$FLAGS" "$@"
 }
 
 # Script once I wrote to copy files with certain prototype
