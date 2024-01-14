@@ -15,7 +15,7 @@ case "$REPLY" in
 	# NF to get the last field
 	2) find "$TEST" -name "test_*.py" -type f |
 		while read -r f; do
-			echo "$f" | awk -F '/' '{print "==== "$NF" ===="}'
+			echo -e "${COLOR_BROWN}==== $(basename $f) ====${RESET}"
 			$utest "$f"
 			((count++))
 			# saving the count in another file
@@ -25,9 +25,9 @@ case "$REPLY" in
 
 		count="$(< $count_file)"
 		if ((count < 2)); then
-			echo "$count file tested"
+			echo "${COLOR_YELLOW}$count file tested${RESET}"
 		else
-			echo "$count files tested"
+			echo -e "${COLOR_YELLOW}$count files tested${RESET}"
 		fi
 		rm "$count_file"
 		;;
