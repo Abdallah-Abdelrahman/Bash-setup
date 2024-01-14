@@ -1,14 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## Aliases
 alias vim="nvim"
 alias html="here_script | cut -f2"
-alias vimx="createx_bash"
+alias vimbash="createx_bash"
 alias vimpy="createx_py"
+alias vimx="createx"
 alias mysetup="vim ~/.bash_aliases"
 
 ## Shell Functions
 
+creatx_all()
+{
+	DIR="$1"
+	for f in "$(find $DIR -name "*.py")"; do
+		chmod u+x $f
+	done
+}
 # create new alx project initialized w/ readme file
 navalx()
 {
@@ -34,12 +42,35 @@ valgf()
 	valgrind --leak-check=full --show-leak-kinds=all $@
 }
 
+# create executable base on langauge
+createx()
+{
+	file_name="$1"
+	exe="$2"
+	option=0
+	# The patter matching below `@(list-patter)` will work as is.
+	# Don't change single quote to double or switch single `[`.
+
+	while [ -z "$file_name" ] || [[ "$exe" != @('bash'|'python3'|'ruby') ]]; do
+		read -p "Please enter file name: " file_name
+		read -p $'Please enter the type of executable:\n\t1- ruby\n\t2- python3\n\t3- bash\n' option
+
+		case $option in
+			1) exe="ruby";;
+			2) exe="python3";;
+			3) exe="bash";;
+			*) createx;;
+		esac
+	done
+
+	echo -e "#!/usr/bin/env $exe\n" > "$file_name" && chmod u+x "$file_name" && vim "$file_name"
+}
 # create executable file, and open it with vim
 # the first argument is the name of the file
 createx_bash()
 {
 	file_name="$1"
-	echo -e '#!/bin/bash\n' > $file_name && vim $file_name && chmod u+x $file_name
+	echo -e '#!/usr/bin/env bash\n' > $file_name && vim $file_name && chmod u+x $file_name
 }
 
 # create executable file, and open it with vim
@@ -134,7 +165,7 @@ rm_emptylines()
 	while IFS= read -r line; do
 		[[ -z $line && "$count" -gt 3 ]] && continue
 		echo "$line"
-		count=$(("$count" + 1));
+		((count++));
 	done
 
 	# or - more elegant, but it has ambigious behavior,
@@ -214,7 +245,8 @@ vimc()
 # `$@` expands to varaible of arguments
 gcf()
 {
-	gcc -g "$FLAGS" "$@"
+	# Don't quote enviroment varaible `FLAGS` it won't work.
+	gcc -g $FLAGS "$@" 
 }
 
 # Script once I wrote to copy files with certain prototype
