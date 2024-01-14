@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Py is a command to execute certain commands,
+# either checking for style or testing
+
+TEST="$PWD/tests"
+utest="python3 -m unittest"
+count=0
+count_file="/tmp/count.txt"
+
+read -rp $'select your action\n1- pycodestyle\n2- test\n'
+
+case "$REPLY" in
+	1) find . -name "*py" -type f | while read -r f; do pycodestyle "$f"; done;;
+	# -F to specify the field sperator
+	# NF to get the last field
+	2) find "$TEST" -name "test_*.py" -type f |
+		while read -r f; do
+			echo "$f" | awk -F '/' '{print "==== "$NF" ===="}'
+			$utest "$f"
+			((count++))
+			# saving the count in another file
+			# bc loop runs in different process
+			echo "$count" > "$count_file"
+		done
+
+		count="$(< $count_file)"
+		if ((count < 2)); then
+			echo "$count file tested"
+		else
+			echo "$count files tested"
+		fi
+		rm "$count_file"
+		;;
+	*) echo 'You need to select one of the options'; py;;
+esac
