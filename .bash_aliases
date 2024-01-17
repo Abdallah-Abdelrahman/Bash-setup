@@ -8,7 +8,22 @@ alias vimx="createx"
 alias mysetup="vim ~/.bash_aliases"
 
 ## Shell Functions
+capbaby()
+{
+	CMDS=('show' 'where' 'alter' 'select' 'create' 'update' 'delete' 'from' 'insert' 'join' 'distinct' 'set' 'convert' 'collate' 'database' 'table' 'exists')
+	AGGREGATE=('sum' 'avg' 'case' 'count' 'limit' 'min' 'max' 'having')
+	GROUPING=('as' 'is' 'group by' 'order by' 'with' 'and' 'or' 'null' 'to' 'not' 'if' 'desc' 'asc' 'character')
+	# concatenate the arrays
+	LIST=("${CMDS[@]}" "${AGGREGATE[@]}" "${GROUPING[@]}")
 
+	# by default iterates through arguments
+	for f; do
+		for k in "${LIST[@]}"; do
+			sed -i "s@\b$k\b@${k^^}@g" "$f"
+		done
+	done
+
+}
 creatx_all()
 {
 	DIR="$1"
@@ -19,7 +34,7 @@ creatx_all()
 # create new alx project initialized w/ readme file
 navalx()
 {
-#	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
+	#	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
 	REPO="$1"
 	PROJECT="$2"
 	ALX_PATH="$HOME/Desktop/ALX-SE"
