@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# The script capitalizes every preserved word in `sql`.
+# `${k^^}` syntax below to capitalize words.
+
+CMDS=('show' 'where' 'alter' 'select' 'create' 'update' 'delete' 'from' 'insert' 'join' 'distinct' 'set' 'convert' 'collate' 'database' 'table' 'exists' 'join')
+AGGREGATE=('sum' 'avg' 'case' 'count' 'limit' 'min' 'max' 'having')
+GROUPING=('as' 'is' 'group by' 'order by' 'with' 'and' 'or' 'null' 'to' 'not' 'if' 'desc' 'asc' 'character')
+# concatenate the arrays
+LIST=("${CMDS[@]}" "${AGGREGATE[@]}" "${GROUPING[@]}")
+
+if (("$#" == 0)); then
+	echo "No file provided!"
+	exit 1
+fi
+
+# by default iterates through arguments
+for f; do
+	if [ ! -e "$f" ]; then
+		echo -e "${COLOR_YELLOW}<$f>${RESET} ${COLOR_LIGHT_RED}doesn't exists!${RESET}"
+		continue
+	fi
+
+	# check for file extension
+	echo "$f" | grep -qE 'sql$'
+	exit_status="$?"
+
+	if (("$exit_status" != 0)); then
+		echo -e "${COLOR_LIGHT_RED}file name must end with ${COLOR_YELLOW}.sql${RESET}${RESET}"
+		exit 1
+	fi
+
+	for k in "${LIST[@]}"; do
+		sed -i "s@\b$k\b@${k^^}@g" "$f"
+	done
+done
