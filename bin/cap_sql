@@ -2,11 +2,12 @@
 # The script capitalizes every preserved word in `sql`.
 # `${k^^}` syntax below to capitalize words.
 
-CMDS=('show' 'where' 'alter' 'select' 'create' 'update' 'delete' 'from' 'insert' 'join' 'distinct' 'set' 'convert' 'collate' 'database' 'table' 'exists' 'join')
+CMDS=('show' 'where' 'alter' 'select' 'create' 'update' 'delete' 'from' 'insert' 'distinct' 'set' 'convert' 'collate' 'database' 'table' 'exists' 'grant' 'grants' 'join' 'inner' 'outer' 'right outer' 'left outer' 'user' 'default' 'use')
 AGGREGATE=('sum' 'avg' 'case' 'count' 'limit' 'min' 'max' 'having')
-GROUPING=('as' 'is' 'group by' 'order by' 'with' 'and' 'or' 'null' 'to' 'not' 'if' 'desc' 'asc' 'character')
+GROUPING=('for' 'all' 'on' 'as' 'is' 'identified by' 'group by' 'order by' 'with' 'and' 'or' 'to' 'not' 'if' 'desc' 'asc' 'character' 'varchar' 'int')
+CONSTRAINTS=('unique' 'null' 'primary key' 'foreign key' 'enum' 'references' 'auto_increment')
 # concatenate the arrays
-LIST=("${CMDS[@]}" "${AGGREGATE[@]}" "${GROUPING[@]}")
+LIST=("${CMDS[@]}" "${AGGREGATE[@]}" "${GROUPING[@]}" "${CONSTRAINTS[@]}")
 
 if (("$#" == 0)); then
 	echo "No file provided!"
