@@ -4,8 +4,54 @@
 alias vim="nvim"
 alias vimx="createx"
 alias mysetup="vim ~/.bash_aliases"
+alias w3c="~/Desktop/W3C-Validator/w3c_validator.py"
+alias rsql='mysql -uroot -p$ROOT_PSW'
+alias rm_pycache='find . -type d -name "__pycache__" -exec rm -rf {} +'
 
 ## Shell Functions
+
+# look for a directory in the $HOME and enter it
+goto()
+{
+	local DIR="$1"
+	local i=0
+	local search_result=$(find "$HOME" -iname "$DIR" -type d)
+	local match_count="$(echo "$search_result" | wc -l)"
+	declare -A matches
+
+	if [ -z "$search_result" ]; then
+		echo -e "${COLOR_LIGHT_RED}No match found!${RESET}" >&2
+		return 1
+	fi
+
+	if [ "$match_count" == 1 ]; then
+		cd "$search_result"
+		return 0
+	elif [ "$match_count" -gt 10 ]; then
+		echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}" >&2
+		return 1
+	fi
+
+	echo -e "Found $match_count matches"
+
+	for match in $search_result; do
+		matches[$i]="$match"
+		base_dir="$(basename ${matches[$i]})"
+		echo -e "${COLOR_YELLOW}$i-${RESET} $base_dir" | grep -iE "$DIR" --color
+		((i++))
+	done
+
+	read -rp "Enter your option:-> "
+
+	# wrong option
+	if [ -z "${matches[$REPLY]}" ]; then
+		echo -e "${COLOR_LIGHT_RED}Wrong option${RESET}"
+		return 1
+	else
+		cd "${matches[$REPLY]}"
+	fi
+	
+}
 
 # script to make every py file executable
 creatx_all()
@@ -18,7 +64,6 @@ creatx_all()
 # create new alx project initialized w/ readme file
 navalx()
 {
-	#	read -p "Wt's the repo (provide an optional project name)-> " REPO PROJECT
 	REPO="$1"
 	PROJECT="$2"
 	ALX_PATH="$HOME/Desktop/ALX-SE"
@@ -34,35 +79,6 @@ navalx()
 	fi
 }
 
-
-# Git: Queue a change, make a snapshot, and push your changes in one fell swoop
-bussyGit()
-{
-	# commit_msg="COMMIT MESSAGE"
-	read -p "Enter commit message (imperative) please -->  " commit_msg
-	read -p "Continue? (Y/N): "
-	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
-		git add .
-		git commit -m"$commit_msg"
-		git push
-	else
-		echo cancelled!
-	fi
-}
-
-# Queue up a change, and take a snapshot
-commit()
-{
-	read -p "Enter commit message (imperative) please -->  " commit_msg
-	read -p "Continue? (Y/N): "
-	if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
-		git add .
-		git commit -m"$commit_msg"
-	else
-		echo cancelled!
-	fi
-
-}
 
 # Look up ALX project
 alx()
@@ -171,7 +187,7 @@ proto()
  * Return: 0 as exit status
  */
 $(default "$FUNC_NAME" "$2")
-$(tail -n +1 "$2".h | grep $FUNC_NAME | tr -d \;)
+$(grep $FUNC_NAME "$2".h | tr -d \;)
 {
 	return (0);
 }
@@ -209,14 +225,8 @@ valgf()
 	valgrind --leak-check=full --show-leak-kinds=all $@
 }
 
-# Script once I wrote to copy files with certain prototype
-cp_proto()
-{
-	# `grep ' '` to execlude emptyline in the end
-	for file in $(tail +3 main.h | grep ' ' | cut -d_ -f2 | cut -d\( -f1); do
-		cp `find ../ -name *$file*.c` .
-	done
-}
+# fix git username and password
+# git remote set-url origin https://name:password@github.com/repo.git
 
 ## enviroment variables
 export FLAGS="-Wall -Werror -pedantic -Wextra -std=gnu89"
@@ -237,3 +247,13 @@ export COLOR_CYAN='\e[0;36m'
 export COLOR_LIGHT_CYAN='\e[1;36m'
 export COLOR_LIGHT_GRAY='\e[0;37m'
 export COLOR_WHITE='\e[1;37m'
+export ROOT_PSW='fOola_1995'
+export HBNB_ENV='dev'
+export HBNB_MYSQL_USER='hbnb_dev'
+export HBNB_MYSQL_PWD='hbnb_dev_pwd'
+export HBNB_MYSQL_HOST='localhost'
+export HBNB_MYSQL_DB='hbnb_dev_db'
+export HBNB_TYPE_STORAGE='db'
+export WEB_01='52.91.118.253'
+export WEB_02='35.153.16.72'
+# export NODE_PATH='/usr/lib/node_modules'
