@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# alx utility
+#
+while getops ':r:p:c:' opt; do
+done

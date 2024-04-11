@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Delete swap files created by vim
+find ~ -name '*.swp' -delete

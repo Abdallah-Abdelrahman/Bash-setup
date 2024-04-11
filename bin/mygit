@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# custom git utility
+# Queue a change, make a snapshot, and push your changes in one fell swoop
+
+PUSH=0
+while getopts ':p' opt; do
+	case $opt in
+		p) PUSH=1;;
+		\?) echo -e "${COLOR_RED}Invalid flag '${OPTARG}'${RESET}" && exit 1;;
+	esac
+done
+
+echo -en "${COLOR_LIGHT_PURPLE}Enter commit message (imperative):-> ${RESET}"
+read -r MSG
+echo -en "${COLOR_CYAN}Continue? (Y/N):-> ${RESET}"
+read -r REPLY
+if [[ "$REPLY" == [yY] || "$REPLY" == [Yy][Ee][Ss] ]]; then
+	git add .
+	git commit -m"$MSG"
+	# push only when flag is provided
+	[ "$PUSH" -eq 1 ] && git push
+else
+	echo -e "${COLOR_GRAY}cancelled${RESET} -_-"
+fi
