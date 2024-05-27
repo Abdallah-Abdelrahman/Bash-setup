@@ -67,8 +67,6 @@ let g:airline_symbols.dirty='⚡'
 let g:airline_theme='hybrid'
 
 " For automatic formatting on save `.js` using eslint
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_javascript_standard_exec = 'eslint'
-autocmd bufwritepost *.js silent !eslint % --fix
+autocmd bufwritepost *.js,*.tsx,*.jsx silent !eslint % --fix
 " autocmd bufwritepost *.js silent !semistandard % --fix
-set autoread
+" set autoread
