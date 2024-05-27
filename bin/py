@@ -7,29 +7,31 @@ utest="python3 -m unittest"
 count=0
 count_file="/tmp/count.txt"
 
+# remove __pycache__
+echo "Removing cache..."
+find . -type d -name "__pycache__" -exec rm -rf {} +
+
+test_runner()
+{
+	while read -r f; do
+		echo -e "${COLOR_BROWN}==== $(basename $f) ====${RESET}"
+		$utest "$f"
+		((count++))
+		# saving the count in another file
+		# bc loop runs in different process
+		echo "$count" > "$count_file"
+	done <<< "$1"
+}
+
 read -rp $'select your action\n1- pycodestyle\n2- test\n'
 
 case "$REPLY" in
-	1) find . -name "*py" -type f | while read -r f; do pycodestyle "$f"; done;;
-	# -F to specify the field sperator
-	# NF to get the last field
-	2) find "$TEST" -name "test_*.py" -type f |
-		while read -r f; do
-			echo -e "${COLOR_BROWN}==== $(basename $f) ====${RESET}"
-			$utest "$f"
-			((count++))
-			# saving the count in another file
-			# bc loop runs in different process
-			echo "$count" > "$count_file"
-		done
-
-		count="$(< $count_file)"
-		if ((count < 2)); then
-			echo "${COLOR_YELLOW}$count file tested${RESET}"
-		else
-			echo -e "${COLOR_YELLOW}$count files tested${RESET}"
-		fi
-		rm "$count_file"
+	1)
+		find . -name "*py" -type f ! -path "*/venv/*" ! -path "*/__pycache__/*" ! -path "*/*venv*/*" |
+			while read -r f; do  echo -e "${COLOR_BROWN}checking <$f>${RESET}"; pycodestyle "$f"; done;;
+	2) test_runner "$(find "$TEST" -name "test_*.py" -type f)";
+		counter=$(< $count_file)
+		echo -e "${COLOR_YELLOW}$counter${RESET} $( (($counter > 1)) && echo 'files' || echo 'file') tested"
 		;;
-	*) echo 'You need to select one of the options'; py;;
+	*) echo 'You need to select one of the options' && py;;
 esac

@@ -3,8 +3,20 @@
 # Queue a change, make a snapshot, and push your changes in one fell swoop
 
 PUSH=0
-while getopts ':p' opt; do
+while getopts ':p-:' opt; do
 	case $opt in
+		-)
+			case "${OPTARG}" in
+				# handling of long flag args
+				diff)
+					file="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+					# `!` for inderect expansion see
+					# https://unix.stackexchange.com/questions/41292/variable-substitution-with-an-exclamation-mark-in-bash/41293#41293
+					[ -z "$file" ] && git diff HEAD@{1}..HEAD || git diff HEAD@{1}..HEAD "$file"; exit;;
+
+				*) echo "invalid long option $OPTARG" && exit 1;;
+			esac;;
+
 		p) PUSH=1;;
 		\?) echo -e "${COLOR_RED}Invalid flag '${OPTARG}'${RESET}" && exit 1;;
 	esac

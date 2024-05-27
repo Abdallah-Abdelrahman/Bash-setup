@@ -7,51 +7,10 @@ alias mysetup="vim ~/.bash_aliases"
 alias w3c="~/Desktop/W3C-Validator/w3c_validator.py"
 alias rsql='mysql -uroot -p$ROOT_PSW'
 alias rm_pycache='find . -type d -name "__pycache__" -exec rm -rf {} +'
+alias git-graph='git log --oneline --decorate --graph --all'
 
 ## Shell Functions
 
-# look for a directory in the $HOME and enter it
-goto()
-{
-	local DIR="$1"
-	local i=0
-	local search_result=$(find "$HOME" -iname "$DIR" -type d)
-	local match_count="$(echo "$search_result" | wc -l)"
-	declare -A matches
-
-	if [ -z "$search_result" ]; then
-		echo -e "${COLOR_LIGHT_RED}No match found!${RESET}" >&2
-		return 1
-	fi
-
-	if [ "$match_count" == 1 ]; then
-		cd "$search_result"
-		return 0
-	elif [ "$match_count" -gt 10 ]; then
-		echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}" >&2
-		return 1
-	fi
-
-	echo -e "Found $match_count matches"
-
-	for match in $search_result; do
-		matches[$i]="$match"
-		base_dir="$(basename ${matches[$i]})"
-		echo -e "${COLOR_YELLOW}$i-${RESET} $base_dir" | grep -iE "$DIR" --color
-		((i++))
-	done
-
-	read -rp "Enter your option:-> "
-
-	# wrong option
-	if [ -z "${matches[$REPLY]}" ]; then
-		echo -e "${COLOR_LIGHT_RED}Wrong option${RESET}"
-		return 1
-	else
-		cd "${matches[$REPLY]}"
-	fi
-	
-}
 
 # script to make every py file executable
 creatx_all()
@@ -225,10 +184,24 @@ valgf()
 	valgrind --leak-check=full --show-leak-kinds=all $@
 }
 
+# simple script to replace variable
+# in a project tree with a replacement
+replace()
+{
+	local var="$1"
+	local dir="$2"
+	local replacement="$3"
+	grep "$var" "$dir" -d recurse | awk -F: '{print $1}' | sort -u | xargs -I {} sed -i "s/"$var"/"$replacement"/g" {}
+}
+
 # fix git username and password
 # git remote set-url origin https://name:password@github.com/repo.git
 
+# -------- source executables --------
+source ~/bin/goto
+
 ## enviroment variables
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\e[0;35m$(__git_ps1 " (%s)")\033[0m\$ '
 export FLAGS="-Wall -Werror -pedantic -Wextra -std=gnu89"
 export RESET='\e[0m' # No Color
 export COLOR_BLACK='\e[0;30m'
@@ -256,4 +229,12 @@ export HBNB_MYSQL_DB='hbnb_dev_db'
 export HBNB_TYPE_STORAGE='db'
 export WEB_01='52.91.118.253'
 export WEB_02='35.153.16.72'
+export GOOGLE_API_KEY='AIzaSyCZ65KtrvdNeYBIbii408b_eWg6sMZ9PcQ'
+export GA_API_KEY='AIzaSyDrSr4FKbjIrgVFXqpHfUR6zwAjGTuvugs'
+STC_PSW='fola1995'
+STC_USR='root'
+WIFI_USR_5G='13375'
+WIFI_PSW_5G='N01n73rn37'
+WIFI_USR_4G='13374'
+WIFI_PSW_4G='N01n73rn374'
 # export NODE_PATH='/usr/lib/node_modules'
