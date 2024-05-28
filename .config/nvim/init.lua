@@ -43,6 +43,10 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'dcampos/nvim-snippy'-- For snippy users.
 Plug 'dcampos/cmp-snippy'
 
+-- telescope for search
+Plug 'nvim-lua/plenary.nvim'
+Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.6' });
+
 Plug 'junegunn/vim-easy-align'
 
 -- Any valid git URL is allowed
