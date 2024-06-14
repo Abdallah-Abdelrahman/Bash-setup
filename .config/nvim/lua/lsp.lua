@@ -9,7 +9,8 @@ lsp_mason.setup {
 		'eslint',
 		'tsserver',
 		'tailwindcss',
-		'pyright'
+		'pyright',
+		'clangd'
 	},
 }
 
