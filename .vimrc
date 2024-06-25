@@ -13,7 +13,7 @@ set ignorecase
 set ff=unix
 
 " Update indentation for html and css
-autocmd Filetype html,css setlocal tabstop=4 shiftwidth=4 expandtab
+autocmd Filetype html,css,sql setlocal tabstop=4 shiftwidth=4 expandtab
 " Update indentation for puppet
 autocmd Filetype puppet setlocal tabstop=2 shiftwidth=2 expandtab
 " Update indentation for js, jsx, tsx

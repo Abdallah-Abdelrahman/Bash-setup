@@ -3,10 +3,10 @@
 # `${k^^}` syntax below to capitalize words.
 
 CMDS=('show' 'where' 'alter' 'select' 'create' 'update' 'delete' 'from' 'insert' 'distinct' 'set' 'convert' 'collate' 'database' 'table' 'exists' 'grant' 'grants' 'join' 'inner' 'outer' 'right outer' 'left outer' 'user' 'default' 'use' 'privileges')
-AGGREGATE=('sum' 'avg' 'case' 'count' 'limit' 'min' 'max' 'having' 'delimiter' 'begin' 'end' 'procedure')
-GROUPING=('for' 'all' 'in' 'on' 'as' 'is' 'identified by' 'group by' 'order by' 'with' 'and' 'or' 'to' 'not' 'if' 'desc' 'asc'  'varchar' 'union' 'minus')
-CONSTRAINTS=('constraint' 'unique' 'null' 'primary key' 'foreign key' 'enum' 'references' 'auto_increment')
-DATATYPES=('character' 'int')
+AGGREGATE=('sum' 'avg' 'case' 'count' 'limit' 'min' 'max' 'having' 'delimiter' 'begin' 'end' 'procedure' 'after' 'before' 'old' 'new')
+GROUPING=('for' 'all' 'in' 'on' 'as' 'is' 'identified by' 'group by' 'order by' 'with' 'and' 'or' 'to' 'not' 'if' 'else' 'desc' 'asc'  'varchar' 'union' 'minus')
+CONSTRAINTS=('constraint' 'unique' 'null' 'primary key' 'foreign key' 'enum' 'references' 'auto_increment' 'trigger' 'procedure' 'into' 'values' 'then')
+DATATYPES=('character' 'int' 'drop')
 # concatenate the arrays
 LIST=("${CMDS[@]}" "${AGGREGATE[@]}" "${GROUPING[@]}" "${CONSTRAINTS[@]}" "${DATATYPES[@]}")
 
