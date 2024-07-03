@@ -28,7 +28,19 @@ read -rp $'select your action\n1- pycodestyle\n2- test\n'
 case "$REPLY" in
 	1)
 		find . -name "*py" -type f ! -path "*/venv/*" ! -path "*/__pycache__/*" ! -path "*/*venv*/*" |
-			while read -r f; do  echo -e "${COLOR_BROWN}checking <$f>${RESET}"; pycodestyle "$f"; done;;
+			while read -r f; do
+				echo -ne "${COLOR_BROWN}checking <$f> "
+				# redirect error message to temporary file
+				pycodestyle "$f" 2>&1 > /tmp/pyerror.txt
+
+				# check exit status
+				if [ "$?" == 0 ]; then
+					echo -e "${COLOR_GREEN}✓${RESET}"
+				else
+					echo -e "${COLOR_RED}✗${RESET}\n $(cat /tmp/pyerror.txt)"
+				fi
+
+			done;;
 	2) test_runner "$(find "$TEST" -name "test_*.py" -type f)";
 		counter=$(< $count_file)
 		echo -e "${COLOR_YELLOW}$counter${RESET} $( (($counter > 1)) && echo 'files' || echo 'file') tested"
