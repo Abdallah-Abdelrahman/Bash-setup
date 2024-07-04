@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Py is a command to execute certain commands,
 # either checking for style or testing
-
+COLOR_RED='\e[0;31m'
+COLOR_GREEN='\e[0;32m'
+COLOR_BROWN='\e[0;33m'
+RESET='\e[0m' # white
 TEST="$PWD/tests"
 utest="python3 -m unittest"
 count=0
