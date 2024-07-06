@@ -6,7 +6,7 @@ COLOR_GREEN='\e[0;32m'
 COLOR_BROWN='\e[0;33m'
 RESET='\e[0m' # white
 TEST="$PWD/tests"
-utest="python3 -m unittest"
+UTEST="python3 -m unittest"
 count=0
 count_file="/tmp/count.txt"
 
@@ -18,7 +18,7 @@ test_runner()
 {
 	while read -r f; do
 		echo -e "${COLOR_BROWN}==== $(basename $f) ====${RESET}"
-		$utest "$f"
+		$UTEST "$f"
 		((count++))
 		# saving the count in another file
 		# bc loop runs in different process
@@ -44,9 +44,17 @@ case "$REPLY" in
 				fi
 
 			done;;
-	2) test_runner "$(find "$TEST" -name "test_*.py" -type f)";
-		counter=$(< $count_file)
-		echo -e "${COLOR_YELLOW}$counter${RESET} $( (($counter > 1)) && echo 'files' || echo 'file') tested"
+	2)
+		if [ ! -d "$(find . -wholename "$TEST" -type d)" ]; then
+			# No `test` directory
+			test_runner "$(find . -name "test_*.py" -type f)";
+			counter=$(< $count_file)
+			echo -e "${COLOR_YELLOW}$counter${RESET} $( (($counter > 1)) && echo 'files' || echo 'file') tested"
+		else
+			test_runner "$(find "$TEST" -name "test_*.py" -type f)";
+			counter=$(< $count_file)
+			echo -e "${COLOR_YELLOW}$counter${RESET} $( (($counter > 1)) && echo 'files' || echo 'file') tested"
+		fi
 		;;
 	*) echo 'You need to select one of the options' && py;;
 esac
