@@ -1,3 +1,3 @@
 # Setup
 
-the repository represents my linux custom setup and vim setup
+The repository represents my linux custom setup and vim/neovim configuration.
