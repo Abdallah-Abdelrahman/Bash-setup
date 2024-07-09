@@ -43,6 +43,9 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'dcampos/nvim-snippy'-- For snippy users.
 Plug 'dcampos/cmp-snippy'
 
+-- git decorations implemented
+Plug 'lewis6991/gitsigns.nvim'
+
 -- telescope for search
 Plug 'nvim-lua/plenary.nvim'
 Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.6' });
@@ -96,6 +99,8 @@ require('auto_cmp')
 
 -- KEY BINDINGS --
 require('keybindings')
+
+require('gitsigns').setup()
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");

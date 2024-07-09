@@ -32,7 +32,7 @@ case "$REPLY" in
 	1)
 		find . -name "*py" -type f ! -path "*/venv/*" ! -path "*/__pycache__/*" ! -path "*/*venv*/*" |
 			while read -r f; do
-				echo -ne "${COLOR_BROWN}checking <$f> "
+				echo -ne "${COLOR_BROWN}checking <$(basename $f)> "
 				# redirect error message to temporary file
 				pycodestyle "$f" 2>&1 > /tmp/pyerror.txt
 
