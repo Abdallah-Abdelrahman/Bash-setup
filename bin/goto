@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # script that locate the searched directory in your home tree,
 # and change current working diretory accordingly.
+export COLOR_LIGHT_RED='\e[1;31m'
+export RESET='\e[0m' # No Color
+export COLOR_YELLOW='\e[1;33m'
+
 goto()
 {
 	local CACHE_FILE="$HOME/.goto_cache"
