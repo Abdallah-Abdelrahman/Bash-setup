@@ -29,7 +29,7 @@ goto()
 	    while IFS= read -r f; do
 		    ((match_count > 0)) && cache["$DIR"]+=","
 		    cache["$DIR"]+="$f"
-		    ((match_count++))
+		    [ -n "$f" ] && ((match_count++))
 	    done <<< $(find "$HOME" -iname "$DIR" -type d)
     else
 	    # cache hit
@@ -43,7 +43,7 @@ goto()
 	    done
     fi
 
-    if [ "$match_count" == 0 ]; then
+    if ((match_count == 0)); then
 	    # no match found
 	    echo -e "${COLOR_LIGHT_RED}No match found!${RESET}" >&2
 	    return 1
