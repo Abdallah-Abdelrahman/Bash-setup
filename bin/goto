@@ -16,75 +16,75 @@ goto()
 	declare -A matches
 	declare -A cache
 
-    # Reading the file and populating the associative array
-    # field separator is `=` sign
-    while IFS='=' read -r key value; do
-	    cache["$key"]="$value"
-    done < "$CACHE_FILE"
+    	# Reading the file and populating the associative array
+    	# field separator is `=` sign
+    	while IFS='=' read -r key value; do
+    	        cache["$key"]="$value"
+    	done < "$CACHE_FILE"
 
-    if [ -z "${cache[$DIR]}" ]; then
-	    echo '<--------CACHE MISS------->'
-	    # cach miss
-	    cache_miss=1
-	    while IFS= read -r f; do
-		    ((match_count > 0)) && cache["$DIR"]+=","
-		    cache["$DIR"]+="$f"
-		    [ -n "$f" ] && ((match_count++))
-	    done <<< $(find "$HOME" -iname "$DIR" -type d)
-    else
-	    # cache hit
-	    echo '<--------CACHE HIT------->'
-	    IFS=','
-	    for f in ${cache[$DIR]}; do
-		    ((match_count > 10)) &&\
-			    echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}"\
-			    >&2 && exit
-		    ((match_count++))
-	    done
-    fi
+    	if [ -z "${cache[$DIR]}" ]; then
+    	        echo '<--------CACHE MISS------->'
+    	        # cach miss
+    	        cache_miss=1
+    	        while IFS= read -r f; do
+    	    	    ((match_count > 0)) && cache["$DIR"]+=","
+    	    	    cache["$DIR"]+="$f"
+    	    	    [ -n "$f" ] && ((match_count++))
+    	        done <<< $(find "$HOME" -iname "$DIR" -type d)
+    	else
+    	        # cache hit
+    	        echo '<--------CACHE HIT------->'
+    	        IFS=','
+    	        for f in ${cache[$DIR]}; do
+    	    	    ((match_count > 10)) &&\
+    	    		    echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}"\
+    	    		    >&2 && exit
+    	    	    ((match_count++))
+    	        done
+    	fi
 
-    if ((match_count == 0)); then
-	    # no match found
-	    echo -e "${COLOR_LIGHT_RED}No match found!${RESET}" >&2
-	    return 1
-    fi
+    	if ((match_count == 0)); then
+    	        # no match found
+    	        echo -e "${COLOR_LIGHT_RED}No match found!${RESET}" >&2
+    	        return 1
+    	fi
 
-    if ((cache_miss)); then
-	    # save search to cache
-	    echo "$DIR=${cache[$DIR]}" >> "$CACHE_FILE"
-    fi
+    	if ((cache_miss)); then
+    	        # save search to cache
+    	        echo "$DIR=${cache[$DIR]}" >> "$CACHE_FILE"
+    	fi
 
 
-    # one match found
-    if ((match_count == 1)); then
-	    cd "${cache[$DIR]}"
-	    return 0
-    elif ((match_count > 10)); then
-	    echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}" >&2
-	    return 1
-    fi
+    	# one match found
+    	if ((match_count == 1)); then
+    	        cd "${cache[$DIR]}"
+    	        return 0
+    	elif ((match_count > 10)); then
+    	        echo -e "${COLOR_LIGHT_RED}Found $match_count matches, try to filter with more characters${RESET}" >&2
+    	        return 1
+    	fi
 
-    echo -e "Found $match_count matches"
+    	echo -e "Found $match_count matches"
 
-    # more than one match found
-    IFS=','  # change field separator to comma
-    for match in ${cache[$DIR]}; do
-	    matches[$i]="$match"
-	    base_dir="$(basename ${matches[$i]})"
-	    # check if there's any wildcard in the pattern to replace it '\w+' pattern
-	    regex=$([[ "$DIR" =~ \* ]] && echo "$DIR" | sed s@\*@'\\\w+?'@g || echo "$DIR")
-	    highlighted="$(echo -e "${COLOR_YELLOW}${i}-${RESET} ${base_dir}" | grep -iE "$regex" --color=always)"
-	    echo "$highlighted  -> (${matches[$i]})"
-	    ((i++))
-    done
+    	# more than one match found
+    	IFS=','  # change field separator to comma
+    	for match in ${cache[$DIR]}; do
+    	        matches[$i]="$match"
+    	        base_dir="$(basename ${matches[$i]})"
+    	        # check if there's any wildcard in the pattern to replace it '\w+' pattern
+    	        regex=$([[ "$DIR" =~ \* ]] && echo "$DIR" | sed s@\*@'\\\w+?'@g || echo "$DIR")
+    	        highlighted="$(echo -e "${COLOR_YELLOW}${i}-${RESET} ${base_dir}" | grep -iE "$regex" --color=always)"
+    	        echo "$highlighted  -> (${matches[$i]})"
+    	        ((i++))
+    	done
 
-    read -rp "Enter your option:-> "
+    	read -rp "Enter your option:-> "
 
-    # wrong option
-    if [ -z "${matches[$REPLY]}" ]; then
-	    echo -e "${COLOR_LIGHT_RED}Wrong option${RESET}"
-	    return 1
-    else
-	    cd "${matches[$REPLY]}"
-    fi
+    	# wrong option
+    	if [ -z "${matches[$REPLY]}" ]; then
+    	        echo -e "${COLOR_LIGHT_RED}Wrong option${RESET}"
+    	        return 1
+    	else
+    	        cd "${matches[$REPLY]}"
+    	fi
 }
