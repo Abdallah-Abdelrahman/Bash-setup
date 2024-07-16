@@ -16,6 +16,11 @@ goto()
 	declare -A matches
 	declare -A cache
 
+	if [ -z "$DIR" ]; then
+		# directory not provided or wrong type
+		echo -e "${COLOR_YELLOW}Please provide a direcotry as an argument${RESET}"
+		return 1
+	fi
     	# Reading the file and populating the associative array
     	# field separator is `=` sign
     	while IFS='=' read -r key value; do
@@ -49,7 +54,7 @@ goto()
     	        return 1
     	fi
 
-    	if ((cache_miss)); then
+    	if ((cache_miss && match_count <= 10)); then
     	        # save search to cache
     	        echo "$DIR=${cache[$DIR]}" >> "$CACHE_FILE"
     	fi
