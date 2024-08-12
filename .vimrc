@@ -23,8 +23,9 @@ autocmd Filetype javascript,javascriptreact,typescriptreact,typescript setlocal 
 let g:ycm_clangd_uses_ycmd_caching = 0
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
+
 " set leader key to space
-let mapleader = " "
+" let mapleader = " "
 
 " key binding for flodmethod=indent
 nnoremap <leader>fm :set foldmethod=indent<CR>

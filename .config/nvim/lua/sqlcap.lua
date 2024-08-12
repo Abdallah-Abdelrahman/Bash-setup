@@ -12,6 +12,7 @@ function S.capitalize()
 	end
 
 	-- force the buffer to reload
+	-- and flush updates
 	vim.cmd('e')
 end
 

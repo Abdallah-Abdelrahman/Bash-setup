@@ -1,26 +1,13 @@
 -- bring `vim-plug` to lua
 local Plug = vim.fn['plug#'];
 
---------- IMPORT CUSTOM PLUGINS --------------
 --
--- script loads once mapping is defined
-vim.api.nvim_set_keymap('v', '<leader>,', ":lua require('comment').comment_block()<CR>",
-{noremap = true, silent = true, desc = 'comment block'})
--- defer script loading until mapping executed
-vim.keymap.set('n', '<leader>,', function() require('comment').comment_line() end,
-{noremap = true, silent = true, desc = 'comment one line'})
-
--- sql capitalize
-vim.keymap.set('n', '<leader>q', function () require('sqlcap').capitalize() end,
-{noremap = true, silent = true, desc = 'capitalize sql keywords'})
-
-
-
----------- IMPORTING REMOTE PLUGINS ----------
+---------- INSTALLING REMOTE PLUGINS ----------
 --
+
 vim.call('plug#begin');
 
--- themesthemesthemesthemes
+-- dark themes for neovim
 Plug 'folke/tokyonight.nvim'
 
 -- neovim lsp config
@@ -91,16 +78,37 @@ Plug 'tpope/vim-fugitive'
 -- plugins import ends here
 vim.call('plug#end');
 
--- LSP CONFIGURATION --
+--
+------- IMPORT EXTERNAL PLUGINS, KEYBINDINGS ------------
+--
+
+-- lsp
 require('lsp')
 
--- AUTO-COMPLETION --
+-- auto-completion
 require('auto_cmp')
 
--- KEY BINDINGS --
+-- key bindings
 require('keybindings')
 
+-- git changes bar tracker (green for addtion, red for deletion)
 require('gitsigns').setup()
+
+--
+--------- ME PLUGINS --------------
+--
+
+-- script loads once mapping is defined
+vim.api.nvim_set_keymap('v', '<leader>,', ":lua require('comment').comment_block()<CR>",
+{noremap = true, silent = true, desc = 'comment block'})
+
+-- defer script loading until mapping executed
+vim.keymap.set('n', '<leader>,', function() require('comment').comment_line() end,
+{noremap = true, silent = true, desc = 'comment one line'})
+
+-- sql capitalize
+vim.keymap.set('n', '<leader>q', function () require('sqlcap').capitalize() end,
+{noremap = true, silent = true, desc = 'capitalize sql keywords'})
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");
