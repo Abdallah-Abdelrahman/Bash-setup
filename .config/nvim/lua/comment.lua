@@ -55,7 +55,7 @@ end
 
 function C.setup()
 	-- script loads once mapping is defined
-	vim.api.nvim_set_keymap('v', '<leader>,', C.comment_block,
+	vim.keymap.set('v', '<leader>,', C.comment_block,
 		{ noremap = true, silent = true, desc = 'comment block' })
 
 	-- defer script loading until mapping executed
