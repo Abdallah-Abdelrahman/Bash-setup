@@ -13,6 +13,10 @@ function C.comment_line()
 		-- match against `.tsx` as well
 		ext = 'jsx'
 	end
+	if ext:match('ts') then
+		-- match against `.ts` as well
+		ext = 'js'
+	end
 	local symbol = C.filetype[ext] -- get corresponding comment symbol
 	local line = vim.fn.getline('.') -- current line under the cursor
 
@@ -25,7 +29,7 @@ function C.comment_line()
 	if type(symbol) == 'table' then
 		vim.fn.setline('.', symbol.open .. line .. symbol.close)
 	else
-		vim.fn.setline('.', symbol..line)
+		vim.fn.setline('.', symbol .. line)
 	end
 end
 
@@ -49,5 +53,14 @@ function C.comment_block()
 	vim.fn.setline(l_line + 1, ' */') -- close the comment
 end
 
+function C.setup()
+	-- script loads once mapping is defined
+	vim.api.nvim_set_keymap('v', '<leader>,', C.comment_block,
+		{ noremap = true, silent = true, desc = 'comment block' })
+
+	-- defer script loading until mapping executed
+	vim.keymap.set('n', '<leader>,', C.comment_line,
+		{ noremap = true, silent = true, desc = 'comment one line' })
+end
 
 return C

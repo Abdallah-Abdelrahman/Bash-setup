@@ -81,7 +81,6 @@ vim.call('plug#end');
 --
 ------- IMPORT EXTERNAL PLUGINS, KEYBINDINGS ------------
 --
-
 -- lsp
 require('lsp')
 
@@ -95,20 +94,13 @@ require('keybindings')
 require('gitsigns').setup()
 
 --
---------- ME PLUGINS --------------
+-- ME PLUGINS --
 --
+-- commenting code
+require('comment').setup()
 
--- script loads once mapping is defined
-vim.api.nvim_set_keymap('v', '<leader>,', ":lua require('comment').comment_block()<CR>",
-{noremap = true, silent = true, desc = 'comment block'})
-
--- defer script loading until mapping executed
-vim.keymap.set('n', '<leader>,', function() require('comment').comment_line() end,
-{noremap = true, silent = true, desc = 'comment one line'})
-
--- sql capitalize
-vim.keymap.set('n', '<leader>q', function () require('sqlcap').capitalize() end,
-{noremap = true, silent = true, desc = 'capitalize sql keywords'})
+-- capitalize sql keywords
+require('sqlcap').setup()
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");
