@@ -75,6 +75,9 @@ Plug 'vim-airline/vim-airline-themes'
 -- to disply airline sections
 Plug 'tpope/vim-fugitive'
 
+-- lazygit inside neovim
+Plug 'kdheepak/lazygit.nvim'
+
 -- plugins import ends here
 vim.call('plug#end');
 
