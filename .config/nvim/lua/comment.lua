@@ -2,6 +2,8 @@ local C = {};
 C.filetype = {
 	py = '#',
 	js = '//',
+	html = { open = '<!--', close = '-->' },
+	css = { open = '/**', close = '*/' },
 	c = { open = '/*', close = '*/' },
 	jsx = { open = '{/*', close = '*/}' }
 }

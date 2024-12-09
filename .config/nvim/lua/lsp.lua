@@ -10,7 +10,8 @@ lsp_mason.setup {
 		'tsserver',
 		'tailwindcss',
 		'pyright',
-		'clangd'
+		'clangd',
+		'gopls'
 	},
 }
 
@@ -43,4 +44,10 @@ lsp_mason.setup_handlers {
 	-- 		}
 	-- 	}
 	-- end,
+	-- ['eslint'] = function()
+	-- 	lspconfig.eslint.setup {
+	-- 	TODO: override the default settings of config file
+	-- 	instead of .eslintrc.json, use .eslintrc.js
+	-- 	}
+	-- 	end,
 }

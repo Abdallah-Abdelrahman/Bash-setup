@@ -30,6 +30,9 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'dcampos/nvim-snippy'-- For snippy users.
 Plug 'dcampos/cmp-snippy'
 
+-- css colors
+Plug 'ap/vim-css-color'
+
 -- git decorations implemented
 Plug 'lewis6991/gitsigns.nvim'
 
@@ -104,6 +107,9 @@ require('comment').setup()
 
 -- capitalize sql keywords
 require('sqlcap').setup()
+
+-- custom script to execute on buffer save
+require('on_save')
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");
