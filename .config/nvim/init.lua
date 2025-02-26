@@ -81,6 +81,9 @@ Plug 'tpope/vim-fugitive'
 -- lazygit inside neovim
 Plug 'kdheepak/lazygit.nvim'
 
+-- prettier for formatting
+Plug 'dense-analysis/ale'
+
 -- plugins import ends here
 vim.call('plug#end');
 
@@ -109,7 +112,7 @@ require('comment').setup()
 require('sqlcap').setup()
 
 -- custom script to execute on buffer save
-require('on_save')
+-- require('on_save')
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");

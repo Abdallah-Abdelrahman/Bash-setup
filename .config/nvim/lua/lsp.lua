@@ -3,15 +3,15 @@ local lsp_mason = require("mason-lspconfig")
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-
+print("Setting up LSP", lspconfig)
 lsp_mason.setup {
 	ensure_installed = {
 		'eslint',
-		'tsserver',
+		-- 'tsserver',
 		'tailwindcss',
 		'pyright',
 		'clangd',
-		'gopls'
+		'gopls',
 	},
 }
 
@@ -33,17 +33,20 @@ lsp_mason.setup_handlers {
 		}
 	end,
 	-- Next, you can provide a dedicated handler for specific servers.
-	-- ['pylsp'] = function()
-	-- 	lspconfig.pylsp.setup {
-	-- 		settings = {
-	-- 			pylsp = {
-	-- 				plugins = {
-	-- 					pylint = { enabled = true, executable = 'pylint', }
-	-- 				}
-	-- 			}
-	-- 		}
-	-- 	}
-	-- end,
+	['lua_ls'] = function()
+		lspconfig.lua_ls.setup {
+      cmd = { "lua-language-server"},
+      filetypes = { "lua" },
+      root_markers = { '.luarc.json', 'luarc.jsonc' },
+      settings = {
+        Lua = {
+          runtime = {
+            version = 'LuaJIT',
+          }
+        }
+      }
+		}
+	end,
 	-- ['eslint'] = function()
 	-- 	lspconfig.eslint.setup {
 	-- 	TODO: override the default settings of config file
