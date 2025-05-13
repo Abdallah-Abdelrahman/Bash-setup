@@ -21,13 +21,13 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip' -- For vsnip users.
+Plug 'hrsh7th/cmp-vsnip'   -- For vsnip users.
 Plug 'hrsh7th/vim-vsnip'
-Plug 'L3MON4D3/LuaSnip'-- For luasnip users.
+Plug 'L3MON4D3/LuaSnip'    -- For luasnip users.
 Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'SirVer/ultisnips'-- For ultisnips users.
+Plug 'SirVer/ultisnips'    -- For ultisnips users.
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-Plug 'dcampos/nvim-snippy'-- For snippy users.
+Plug 'dcampos/nvim-snippy' -- For snippy users.
 Plug 'dcampos/cmp-snippy'
 
 -- css colors
@@ -38,7 +38,7 @@ Plug 'lewis6991/gitsigns.nvim'
 
 -- telescope for search
 Plug 'nvim-lua/plenary.nvim'
-Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.6' });
+Plug('nvim-telescope/telescope.nvim', { tag = '0.1.6' });
 
 Plug 'junegunn/vim-easy-align'
 
@@ -50,7 +50,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 -- On-demand loading
-Plug('preservim/nerdtree', { on = 'NERDTreeToggle'});
+Plug('preservim/nerdtree', { on = 'NERDTreeToggle' });
 Plug('tpope/vim-fireplace', { ['for'] = 'clojure' });
 
 -- Using a non-default branch
@@ -81,15 +81,26 @@ Plug 'tpope/vim-fugitive'
 -- lazygit inside neovim
 Plug 'kdheepak/lazygit.nvim'
 
--- prettier for formatting
-Plug 'dense-analysis/ale'
+-- avante.nvim
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'HakonHarnes/img-clip.nvim'
+Plug 'zbirenbaum/copilot.lua'
+Plug('yetone/avante.nvim', { branch = 'main', ['do'] = 'make', source = true });
+---
 
 -- plugins import ends here
 vim.call('plug#end');
 
---
-------- IMPORT EXTERNAL PLUGINS, KEYBINDINGS ------------
---
+-->
+------- IMPORT EXTERNAL PLUGINS ------------
+-->
+require('avante').setup()
+
 -- lsp
 require('lsp')
 
@@ -105,14 +116,18 @@ require('gitsigns').setup()
 --
 -- ME PLUGINS --
 --
+
 -- commenting code
 require('comment').setup()
 
 -- capitalize sql keywords
 require('sqlcap').setup()
 
--- custom script to execute on buffer save
--- require('on_save')
+-- format html before writing to disk
+require('format').setup()
+
+---------------------------
+
 
 -- source some vim config
 vim.cmd("source ~/.vimrc");

@@ -50,10 +50,12 @@ nnoremap <silent> <Leader><Space> :noh<CR>
 " Exit NERDTree if it's the last buffer
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+
 " Powerline symbols
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
+
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
@@ -69,5 +71,3 @@ let g:airline_theme='hybrid'
 
 " For automatic formatting on save `.js` using eslint
 autocmd bufwritepost *.js,*.tsx,*.jsx silent !eslint % --fix
-" autocmd bufwritepost *.js silent !semistandard % --fix
-" set autoread

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# remove docker container base on image name
+
+docker rm $(docker ps -aq -f ancestor="$1")

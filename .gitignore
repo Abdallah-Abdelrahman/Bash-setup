@@ -1,0 +1,7 @@
+*
+!/.gitignore
+!/.vimrc
+!/bin
+!/.config
+!/.config/nvim/**
+/.config/nvim/pack/*/start/*/.git/
