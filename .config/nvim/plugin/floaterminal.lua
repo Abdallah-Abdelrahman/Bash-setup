@@ -1,4 +1,3 @@
-print("1")
 local state = { buf = -1, win = -1 } -- Initialize state w/ invalid buffer and window IDs
 
 local function open_floating_window(opts)
