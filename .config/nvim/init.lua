@@ -7,6 +7,9 @@ local Plug = vim.fn['plug#'];
 
 vim.call('plug#begin');
 
+-- Session Management
+Plug 'rmagatti/auto-session'
+
 -- UI Enhancements
 Plug 'folke/tokyonight.nvim'  -- Dark theme
 Plug 'ryanoasis/vim-devicons' -- Icons
