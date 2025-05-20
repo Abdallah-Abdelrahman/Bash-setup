@@ -11,16 +11,16 @@ lsp_mason.setup {
     'eslint',
     --'tsserver',
     'tailwindcss',
-    'pyright',
     'clangd',
     'gopls',
+    'ruff'
   },
 }
 
 local on_attach = function(_client, _bufnr)
   local map = require('map')('lsp')
   map({
-    desc = "Rename",
+    desc = "Rename variable",
     key = "<leader>rn",
     action = vim.lsp.buf.rename,
   })

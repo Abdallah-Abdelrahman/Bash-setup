@@ -75,7 +75,6 @@ vim.call('plug#end');
 -->
 ------- IMPORT EXTERNAL PLUGINS ------------
 -->
-require('avante').setup({ provider = 'openai' })
 
 -- lsp
 require('lsp')
