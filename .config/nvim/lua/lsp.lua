@@ -13,7 +13,8 @@ lsp_mason.setup {
     'tailwindcss',
     'clangd',
     'gopls',
-    'ruff'
+    --'ruff',
+    'pyright'
   },
 }
 

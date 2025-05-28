@@ -6,4 +6,4 @@ if [[ -z "$PDF" ]]; then
   echo "Usage: $0 <pdf-file-name>"
   exit 1
 fi
-open "$(find "$HOME" -type f -iname "*$PDF*.pdf" | fzf)"
+open "$(fzf)"
