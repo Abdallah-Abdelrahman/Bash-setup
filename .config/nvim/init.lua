@@ -58,8 +58,8 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug('tpope/vim-fireplace', { ['for'] = 'clojure' });
 Plug('rdnetto/YCM-Generator', { branch = 'stable' })
-Plug('fatih/vim-go', { tag = '*' });
-Plug('nsf/gocode', { tag = 'v.20150303', rtp = 'vim' });
+-- Plug('fatih/vim-go', { tag = '*' });
+-- Plug('nsf/gocode', { tag = 'v.20150303', rtp = 'vim' });
 Plug('junegunn/fzf', { dir = '~/.fzf', ['do'] = './install --all' });
 Plug '~/my-prototype-plugin'
 

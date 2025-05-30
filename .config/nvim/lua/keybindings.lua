@@ -3,6 +3,9 @@ local map = require('map')('telescope')
 
 vim.opt.laststatus = 3 -- for avante.nvim
 
+-- Disable vim-go's default `K` mapping for documentation
+vim.g.go_doc_keywordprg_enabled = 0
+
 -- leader key = empty space
 vim.g.mapleader = ' '
 --

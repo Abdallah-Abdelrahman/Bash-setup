@@ -1,5 +1,5 @@
 -- Add the same capabilities to ALL server configurations.
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local telescope_builtin = require("telescope.builtin")
 
 require("mason").setup()
@@ -18,7 +18,13 @@ lsp_mason.setup {
   },
 }
 
-local on_attach = function(_client, _bufnr)
+local on_attach = function(client, bufnr)
+  if client.name == 'gopls' then
+    -- Ensure omnifunc is not set to vim-go's completer when gopls is active.
+    -- This explicitly unsets omnifunc for the current buffer.
+    vim.bo.omnifunc = ''
+    --vim.api.nvim_buf_set_option(bufnr, 'omnifunc', '')
+  end
   local map = require('map')('lsp')
   map({
     desc = "Rename variable",
@@ -55,9 +61,19 @@ local on_attach = function(_client, _bufnr)
     key = "<leader>f",
     action = vim.lsp.buf.format,
   })
+  map({
+    key = "K",
+    action = vim.lsp.buf.hover,
+    desc = "Show documentation",
+  })
+  map({
+    key = "<C-k>",
+    action = vim.lsp.buf.signature_help,
+    desc = "Show signature help",
+  })
 end
 
 vim.lsp.config("*", {
-  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  capabilities = capabilities, --vim.lsp.protocol.make_client_capabilities(),
   on_attach = on_attach
 });
