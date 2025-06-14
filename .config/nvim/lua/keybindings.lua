@@ -49,7 +49,7 @@ end, { desc = 'indent html' })
 -- telescope
 vim.keymap.set('n', '<leader>sf', function()
     builtin.find_files({
-      hidden = true, -- Include hidden files
+      -- hidden = true, -- Include hidden files
       -- no_ignore = true, -- Ignore .gitignore
       -- follow = true,    -- Follow symlinks
     })
@@ -58,15 +58,41 @@ vim.keymap.set('n', '<leader>sf', function()
 )
 vim.keymap.set('n', '<leader>sg', function()
   builtin.live_grep({
-    additional_args = function(opts)
-      return { '--hidden', '--no-ignore' } -- Include hidden files and ignore .gitignore
-    end,
+    -- additional_args = function(opts)
+    --   return { '--hidden', '--no-ignore' } -- Include hidden files and ignore .gitignore
+    -- end,
   })
 end, { desc = "Live grep (including hidden files)" })
 vim.keymap.set('n', '<leader>sb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, {})
 map({
- key = '<leader>fg',
+ key = '<C-s>g',
  desc = 'search git files only',
  action = builtin.git_files,
+})
+
+-- key bindings to yank buffer content
+map({
+  key = '<leader>vy',
+  action = function ()
+    vim.cmd(":%y")
+  end,
+  desc = 'yank all buffer content',
+})
+
+-- key bindings to delete buffer content
+map({
+  key = '<leader>vd',
+  action = function ()
+    vim.cmd(":%d")
+  end,
+  desc = 'delete all buffer content',
+})
+-- key bindings to selecg buffer content
+map({
+  key = '<C-a>',
+  action = function ()
+    vim.cmd('normal! ggVG')
+  end,
+  desc = 'select all buffer content',
 })
