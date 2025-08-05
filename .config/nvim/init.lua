@@ -36,6 +36,9 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'dcampos/nvim-snippy' -- For snippy users.
 Plug 'dcampos/cmp-snippy'
 
+-- Syntax Highlighting and Treesitter
+Plug "SmiteshP/nvim-navic"
+
 -- Git Integration
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'

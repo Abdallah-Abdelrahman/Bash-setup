@@ -1,10 +1,10 @@
 -- Add the same capabilities to ALL server configurations.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local telescope_builtin = require("telescope.builtin")
+local navic = require("nvim-navic")
+local lsp_mason = require("mason-lspconfig")
 
 require("mason").setup()
-local lsp_mason = require("mason-lspconfig")
---local lspconfig = require('lspconfig')
 
 lsp_mason.setup {
   ensure_installed = {
@@ -25,6 +25,9 @@ local on_attach = function(client, bufnr)
     vim.bo.omnifunc = ''
     --vim.api.nvim_buf_set_option(bufnr, 'omnifunc', '')
   end
+  if client.server_capabilities.documentSymbolProvider then
+        navic.attach(client, bufnr)
+    end
   local map = require('map')('lsp')
   map({
     desc = "Rename variable",

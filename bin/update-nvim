@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # script to update neovim
 
+echo "Updating Neovim..."
+echo -e "current version:\n $(nvim -v)"
 curl --output-dir "$HOME/Downloads" -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
 sudo rm -rf /opt/nvim
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+sudo tar -C /opt -xzf "$HOME/Downloads/nvim-linux-x86_64.tar.gz"
+echo -e "Neovim updated successfully!\n $(nvim -v)"
