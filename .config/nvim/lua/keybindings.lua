@@ -66,15 +66,15 @@ end, { desc = "Live grep (including hidden files)" })
 vim.keymap.set('n', '<leader>sb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, {})
 map({
- key = '<C-s>g',
- desc = 'search git files only',
- action = builtin.git_files,
+  key = '<C-s>g',
+  desc = 'search git files only',
+  action = builtin.git_files,
 })
 
 -- key bindings to yank buffer content
 map({
   key = '<leader>vy',
-  action = function ()
+  action = function()
     vim.cmd(":%y")
   end,
   desc = 'yank all buffer content',
@@ -83,7 +83,7 @@ map({
 -- key bindings to delete buffer content
 map({
   key = '<leader>vd',
-  action = function ()
+  action = function()
     vim.cmd(":%d")
   end,
   desc = 'delete all buffer content',
@@ -91,7 +91,7 @@ map({
 -- key bindings to selecg buffer content
 map({
   key = '<C-a>',
-  action = function ()
+  action = function()
     vim.cmd('normal! ggVG')
   end,
   desc = 'select all buffer content',

@@ -8,7 +8,7 @@ require("mason").setup()
 
 lsp_mason.setup {
   ensure_installed = {
-    'eslint',
+    'ts_ls',
     --'tsserver',
     'tailwindcss',
     'clangd',
@@ -26,8 +26,8 @@ local on_attach = function(client, bufnr)
     --vim.api.nvim_buf_set_option(bufnr, 'omnifunc', '')
   end
   if client.server_capabilities.documentSymbolProvider then
-        navic.attach(client, bufnr)
-    end
+    navic.attach(client, bufnr)
+  end
   local map = require('map')('lsp')
   map({
     desc = "Rename variable",
@@ -62,7 +62,10 @@ local on_attach = function(client, bufnr)
   map({
     desc = "Format buffer",
     key = "<leader>f",
-    action = vim.lsp.buf.format,
+    action = function()
+      require("conform").format({ bufnr = bufnr })
+      vim.lsp.buf.format()
+    end,
   })
   map({
     key = "K",

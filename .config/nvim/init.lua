@@ -35,6 +35,7 @@ Plug 'SirVer/ultisnips'    -- For ultisnips users.
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'dcampos/nvim-snippy' -- For snippy users.
 Plug 'dcampos/cmp-snippy'
+Plug 'stevearc/conform.nvim'
 
 -- Syntax Highlighting and Treesitter
 Plug "SmiteshP/nvim-navic"
