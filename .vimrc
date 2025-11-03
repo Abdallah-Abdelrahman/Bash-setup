@@ -31,12 +31,12 @@ nnoremap <leader>fm :set foldmethod=indent<CR>
 nnoremap <leader>bb :b#<CR>
 
 " Mapping file explorer key bindings
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <leader>r :NERDTreeRefreshRoot<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-let g:webdevicons_enable_nerdtree = 1
+" nnoremap <leader>n :NERDTreeFocus<CR>
+" nnoremap <leader>r :NERDTreeRefreshRoot<CR>
+" nnoremap <C-n> :NERDTree<CR>
+" nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
+" let g:webdevicons_enable_nerdtree = 1
 
 " theme for neovim
 colorscheme tokyonight-night
@@ -45,7 +45,7 @@ colorscheme tokyonight-night
 nnoremap <silent> <Leader><Space> :noh<CR>
 
 " Exit NERDTree if it's the last buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 " Powerline symbols
@@ -67,4 +67,4 @@ let g:airline_symbols.dirty='⚡'
 let g:airline_theme='hybrid'
 
 " For automatic formatting on save `.js` using eslint
-autocmd bufwritepost *.js,*.tsx,*.jsx silent !eslint % --fix
+" autocmd bufwritepost *.js,*.tsx,*.jsx silent !eslint % --fix
