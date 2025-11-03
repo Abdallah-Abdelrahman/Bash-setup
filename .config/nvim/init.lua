@@ -48,7 +48,8 @@ Plug 'kdheepak/lazygit.nvim'
 -- Search and Navigation
 Plug 'nvim-lua/plenary.nvim'
 Plug('nvim-telescope/telescope.nvim', { tag = '0.1.6' });
-Plug('preservim/nerdtree', { on = 'NERDTreeToggle' });
+--Plug('preservim/nerdtree', { on = 'NERDTreeToggle' });
+Plug 'nvim-tree/nvim-tree.lua'
 
 -- Code Utilities
 Plug 'ap/vim-css-color'

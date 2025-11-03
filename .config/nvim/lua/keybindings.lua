@@ -14,6 +14,11 @@ vim.g.mapleader = ' '
 vim.opt.relativenumber = true
 vim.opt.number = true
 
+-- nvim tree keybindings
+vim.keymap.set('n', '<C-t>', '<cmd>NvimTreeToggle<CR>', { desc = 'toggle file explorer' })
+vim.keymap.set('n', '<C-r>', '<cmd>NvimTreeRefresh<CR>', { desc = 'refresh file explorer' })
+vim.keymap.set('n', '<C-f>', '<cmd>NvimTreeFindFile<CR>', { desc = 'find current file in file explorer' })
+
 -- paste always from the yank register instead of the default register
 vim.keymap.set('n', '<leader>p', '"0p', { desc = 'past from the last yanded text' })
 vim.keymap.set('n', '<leader>P', '"0P', { desc = 'past from the last yanded text' })
