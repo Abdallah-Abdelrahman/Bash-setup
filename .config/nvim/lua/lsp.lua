@@ -4,7 +4,6 @@ local telescope_builtin = require("telescope.builtin")
 local navic = require("nvim-navic")
 
 local on_attach = function(client, bufnr)
-  vim.o.winborder = 'rounded'
 
   if client.name == 'gopls' then
     -- vim.bo.omnifunc = ''
@@ -36,7 +35,10 @@ local on_attach = function(client, bufnr)
   })
   map({
     key = "K",
-    action = vim.lsp.buf.hover,
+    action = function()
+      -- Show documentation in a floating window
+      vim.lsp.buf.hover({ border = "rounded", max_width = 120 })
+    end,
     desc = "Show documentation",
   })
   map({

@@ -78,10 +78,11 @@ vim.call('plug#end');
 ------- IMPORT EXTERNAL PLUGINS ------------
 -->
 
+vim.o.winborder = 'rounded' -- set global window border style
 
-require('lsp') -- lsps starter
+require('lsp')              -- lsps starter
 
-require('keybindings') -- key bindings
+require('keybindings')      -- key bindings
 
 require('gitsigns').setup() -- git changes bar tracker (green for addition, red for deletion)
 
