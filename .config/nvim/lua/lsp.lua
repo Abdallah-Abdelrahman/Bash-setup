@@ -2,43 +2,18 @@
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local telescope_builtin = require("telescope.builtin")
 local navic = require("nvim-navic")
-local lsp_mason = require("mason-lspconfig")
-
-require("mason").setup()
-
-lsp_mason.setup {
-  ensure_installed = {
-    'ts_ls',
-    --'tsserver',
-    'tailwindcss',
-    'clangd',
-    'gopls',
-    --'ruff',
-    'pyright'
-  },
-}
 
 local on_attach = function(client, bufnr)
+  vim.o.winborder = 'rounded'
+
   if client.name == 'gopls' then
-    -- Ensure omnifunc is not set to vim-go's completer when gopls is active.
-    -- This explicitly unsets omnifunc for the current buffer.
-    vim.bo.omnifunc = ''
-    --vim.api.nvim_buf_set_option(bufnr, 'omnifunc', '')
+    -- vim.bo.omnifunc = ''
   end
   if client.server_capabilities.documentSymbolProvider then
+    print(client, 'ok')
     navic.attach(client, bufnr)
   end
   local map = require('map')('lsp')
-  map({
-    desc = "Rename variable",
-    key = "<leader>rn",
-    action = vim.lsp.buf.rename,
-  })
-  map({
-    desc = "Code action",
-    key = "<leader>ca",
-    action = vim.lsp.buf.code_action,
-  })
   map({
     desc = "Go to definition",
     key = "gd",
@@ -60,17 +35,26 @@ local on_attach = function(client, bufnr)
     action = vim.lsp.buf.type_definition,
   })
   map({
-    desc = "Format buffer",
-    key = "<leader>f",
-    action = function()
-      require("conform").format({ bufnr = bufnr })
-      vim.lsp.buf.format()
-    end,
-  })
-  map({
     key = "K",
     action = vim.lsp.buf.hover,
     desc = "Show documentation",
+  })
+  map({
+    desc = "Rename variable",
+    key = "<leader>rn",
+    action = vim.lsp.buf.rename,
+  })
+  map({
+    desc = "Code action",
+    key = "<leader>ca",
+    action = vim.lsp.buf.code_action,
+  })
+  map({
+    desc = "Format buffer",
+    key = "<leader>f",
+    action = function()
+      vim.lsp.buf.format()
+    end,
   })
   map({
     key = "<C-k>",
@@ -79,7 +63,22 @@ local on_attach = function(client, bufnr)
   })
 end
 
+-- Set global defaults for ALL LSP servers
 vim.lsp.config("*", {
-  capabilities = capabilities, --vim.lsp.protocol.make_client_capabilities(),
-  on_attach = on_attach
-});
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
+-- Auto-discover and enable all LSP servers from /lsp/*.lua
+local lsp_dir = vim.fn.stdpath('config') .. '/lsp'
+local files = vim.fn.readdir(lsp_dir)
+local servers = {}
+
+for _, filename in ipairs(files) do
+  if filename:match('%.lua$') then
+    local server_name = filename:match('(.+)%.lua$')
+    table.insert(servers, server_name)
+  end
+end
+
+vim.lsp.enable(servers)

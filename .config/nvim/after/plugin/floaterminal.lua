@@ -7,7 +7,6 @@ local function open_floating_window(opts)
   local height = math.floor(ui.height * 0.8)
   local row = math.floor((ui.height - height) / 2)
   local col = math.floor((ui.width - width) / 2)
-  local map = require('map')('')
   local win_config = {
     relative = 'editor',
     width = width,

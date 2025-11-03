@@ -1,7 +1,8 @@
 local builtin = require('telescope.builtin')
-local map = require('map')('telescope')
 
 vim.opt.laststatus = 3 -- for avante.nvim
+
+vim.opt.swapfile = false -- disable swap files
 
 -- Disable vim-go's default `K` mapping for documentation
 vim.g.go_doc_keywordprg_enabled = 0
@@ -65,34 +66,16 @@ vim.keymap.set('n', '<leader>sg', function()
 end, { desc = "Live grep (including hidden files)" })
 vim.keymap.set('n', '<leader>sb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, {})
-map({
-  key = '<C-s>g',
-  desc = 'search git files only',
-  action = builtin.git_files,
-})
+vim.keymap.set('n', '<C-s>g', builtin.git_files, { desc = 'search git files only' })
 
--- key bindings to yank buffer content
-map({
-  key = '<leader>vy',
-  action = function()
-    vim.cmd(":%y")
-  end,
-  desc = 'yank all buffer content',
-})
+vim.keymap.set('n', '<leader>vy', function()
+  vim.cmd(":%y")
+end, { desc = 'yank all buffer content' })
 
--- key bindings to delete buffer content
-map({
-  key = '<leader>vd',
-  action = function()
-    vim.cmd(":%d")
-  end,
-  desc = 'delete all buffer content',
-})
--- key bindings to selecg buffer content
-map({
-  key = '<C-a>',
-  action = function()
-    vim.cmd('normal! ggVG')
-  end,
-  desc = 'select all buffer content',
-})
+vim.keymap.set('n', '<leader>vd', function()
+  vim.cmd(":%d")
+end, { desc = 'delete all buffer content' })
+
+vim.keymap.set('n', '<C-a>', function()
+  vim.cmd("normal! ggVG")
+end, { desc = 'select all buffer content' })

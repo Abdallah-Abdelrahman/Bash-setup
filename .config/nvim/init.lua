@@ -20,8 +20,8 @@ Plug 'nvim-tree/nvim-web-devicons'
 
 -- LSP and Auto-completion
 Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
+--Plug 'williamboman/mason.nvim'
+--Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -62,8 +62,6 @@ Plug 'zbirenbaum/copilot.lua'
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug('tpope/vim-fireplace', { ['for'] = 'clojure' });
 Plug('rdnetto/YCM-Generator', { branch = 'stable' })
--- Plug('fatih/vim-go', { tag = '*' });
--- Plug('nsf/gocode', { tag = 'v.20150303', rtp = 'vim' });
 Plug('junegunn/fzf', { dir = '~/.fzf', ['do'] = './install --all' });
 Plug '~/my-prototype-plugin'
 
@@ -80,30 +78,12 @@ vim.call('plug#end');
 ------- IMPORT EXTERNAL PLUGINS ------------
 -->
 
--- lsp
-require('lsp')
 
--- auto-completion
-require('auto_cmp')
+require('lsp') -- lsps starter
 
--- key bindings
-require('keybindings')
+require('keybindings') -- key bindings
 
--- git changes bar tracker (green for addtion, red for deletion)
-require('gitsigns').setup()
-
---
--- ME PLUGINS --
---
-
--- commenting code
-require('comment').setup()
-
--- capitalize sql keywords
-require('sqlcap').setup()
-
--- format html before writing to disk
-require('format').setup()
+require('gitsigns').setup() -- git changes bar tracker (green for addition, red for deletion)
 
 ---------------------------
 
