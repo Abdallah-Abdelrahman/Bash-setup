@@ -9,7 +9,6 @@ local on_attach = function(client, bufnr)
     -- vim.bo.omnifunc = ''
   end
   if client.server_capabilities.documentSymbolProvider then
-    print(client, 'ok')
     navic.attach(client, bufnr)
   end
   local map = require('map')('lsp')
