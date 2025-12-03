@@ -4,11 +4,13 @@ local telescope_builtin = require("telescope.builtin")
 local navic = require("nvim-navic")
 
 local on_attach = function(client, bufnr)
+  vim.o.winborder = 'rounded'
 
-  if client.name == 'gopls' then
-    -- vim.bo.omnifunc = ''
-  end
-  if client.server_capabilities.documentSymbolProvider then
+  -- if client.name == 'gopls' then
+  --  vim.bo.omnifunc = ''
+  -- end
+  if client.server_capabilitie then
+    print(client, 'ok')
     navic.attach(client, bufnr)
   end
   local map = require('map')('lsp')
@@ -34,10 +36,7 @@ local on_attach = function(client, bufnr)
   })
   map({
     key = "K",
-    action = function()
-      -- Show documentation in a floating window
-      vim.lsp.buf.hover({ border = "rounded", max_width = 120 })
-    end,
+    action = vim.lsp.buf.hover,
     desc = "Show documentation",
   })
   map({
@@ -81,5 +80,11 @@ for _, filename in ipairs(files) do
     table.insert(servers, server_name)
   end
 end
+
+-- Configure specific server, to overide lspconfig defaults
+vim.lsp.config("ts_ls", {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
 
 vim.lsp.enable(servers)

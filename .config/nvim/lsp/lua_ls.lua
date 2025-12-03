@@ -1,4 +1,3 @@
-print('No need for this file, or its parent dir [FM]')
 ---@brief
 ---
 --- https://github.com/luals/lua-language-server
