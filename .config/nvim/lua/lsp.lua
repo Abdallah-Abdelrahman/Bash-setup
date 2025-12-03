@@ -69,6 +69,13 @@ vim.lsp.config("*", {
   on_attach = on_attach,
 })
 
+-- Configure specific server, to overide lspconfig defaults,
+-- inside lsp/*.lua modules.
+vim.lsp.config("ts_ls", {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
 -- Auto-discover and enable all LSP servers from /lsp/*.lua
 local lsp_dir = vim.fn.stdpath('config') .. '/lsp'
 local files = vim.fn.readdir(lsp_dir)
@@ -80,11 +87,5 @@ for _, filename in ipairs(files) do
     table.insert(servers, server_name)
   end
 end
-
--- Configure specific server, to overide lspconfig defaults
-vim.lsp.config("ts_ls", {
-  capabilities = capabilities,
-  on_attach = on_attach,
-})
 
 vim.lsp.enable(servers)
